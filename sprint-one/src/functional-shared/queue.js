@@ -4,7 +4,7 @@ var Queue = function() {
   var someInstance = {
     smallest: 0,
     largest: 0,
-    storage: []
+    storage: {}
   };
   _.extend(someInstance, queueMethods);
   return someInstance;
