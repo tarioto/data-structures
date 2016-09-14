@@ -4,11 +4,9 @@ var Queue = function() {
   var someInstance = {
     smallest: 0,
     largest: 0,
-    enqueue: queueMethods.enqueue,
-    dequeue: queueMethods.dequeue,
-    size: queueMethods.size,
     storage: []
   };
+  _.extend(someInstance, queueMethods);
   return someInstance;
 };
 
