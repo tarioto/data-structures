@@ -22,6 +22,20 @@ treeMethods.contains = function(target) {
   });
 };
 
+treeMethods.deleteChild = function(target, parent, childIndex) {
+  if (this.value === target) {
+    parent.children.splice.apply(
+      parent.children, [childIndex, 1].concat(this.children)
+    );
+  } else {
+    var curr = this;
+    this.children.forEach(function(child, index) {
+      child.deleteChild(target, curr, index);
+    });
+  }
+
+};
+
 
 
 /*
