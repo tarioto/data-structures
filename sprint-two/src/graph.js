@@ -60,6 +60,34 @@ Graph.prototype.forEachNode = function(cb) {
   });
 };
 
+Graph.prototype.connected = function(node1, node2, visited) {
+  visited = visited || [];
+  visited.push(node1);
+  if (visited.indexOf(node2) !== -1) {
+    return true;
+  }
+  var current = this;
+  var result = false;
+  this.edges.forEach(function(edge) {
+    if (edge[0] === node1) {
+      if (visited.indexOf(edge[1]) !== -1) {
+        return;
+      } else {
+        result = result || current.connected(edge[1], node2, visited);
+      }
+    } else if (edge[1] === node1) {
+      if (visited.indexOf(edge[0]) !== -1) {
+        return;
+      } else {
+        result = result || current.connected(edge[0], node2, visited);
+      }
+    }
+  });
+
+  return result;
+
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
  */
