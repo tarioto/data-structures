@@ -33,6 +33,21 @@ var LinkedList = function() {
     return false;
   };
 
+  list.removeAt = function(index) {
+    var counter = 0;
+    var current = list.head;
+    var prev = null;
+    while (counter < index) {
+      if (!current) {
+        return;
+      }
+      prev = current;
+      current = current.next;
+      counter++;
+    }
+    prev.next = current.next;
+  };
+
   return list;
 };
 
