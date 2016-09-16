@@ -2,6 +2,7 @@ var Tree = function(value) {
   var newTree = {};
   newTree.value = value;
   _.extend(newTree, treeMethods);
+  newTree.parent = null;
 
   // your code here
   newTree.children = [];  // fix me
@@ -13,6 +14,7 @@ var treeMethods = {};
 
 treeMethods.addChild = function(value) {
   var child = Tree(value);
+  child.parent = this;
   this.children.push(child);
 };
 
@@ -33,10 +35,16 @@ treeMethods.deleteChild = function(target, parent, childIndex) {
       child.deleteChild(target, curr, index);
     });
   }
-
 };
 
-
+treeMethods.removeFromParent = function() {
+  this.parent.children.forEach(function(child, i, collection) {
+    if (child === this) {
+      collection.splice(i, 1);
+    }
+  }.bind(this));
+  this.parent = null;
+};
 
 /*
  * Complexity: What is the time complexity of the above functions?
