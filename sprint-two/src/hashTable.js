@@ -25,6 +25,9 @@ HashTable.prototype.insert = function(k, v) {
   } else {
     this._storage.set(index, [[k, v]]);
   }
+  if (this.basketsUsed() / this._limit >= .75) {
+    this.double();
+  }
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -45,6 +48,49 @@ HashTable.prototype.retrieve = function(k) {
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   this._storage.set(index, undefined);
+  if (this.basketsUsed() / this._limit < .25) {
+    this.half();
+  }
+};
+
+HashTable.prototype.double = function() {
+  var old = this._storage;
+  this._limit *= 2;
+  this._storage = LimitedArray(this._limit);
+  var current = this;
+  old.each(function(basket) {
+    if (basket) {
+      basket.forEach(function(pair) {
+        current.insert(pair[0], pair[1]);
+      });
+    }
+  });
+};
+
+HashTable.prototype.half = function() {
+  var old = this._storage;
+  this._limit = Math.ceil(this._limit / 2);
+  this._storage = LimitedArray(this._limit);
+  var current = this;
+  old.each(function(basket) {
+    if (basket) {
+      basket.forEach(function(pair) {
+        current.insert(pair[0], pair[1]);
+      });
+    }
+  });
+};
+
+HashTable.prototype.basketsUsed = function() {
+  var result = 0;
+  this._storage.each(function(basket) {
+    if (basket) {
+      basket.forEach(function(pair) {
+        result++;
+      });
+    }
+  });
+  return result;
 };
 
 
