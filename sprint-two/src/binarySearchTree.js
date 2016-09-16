@@ -57,6 +57,23 @@ var binaryTreeMethods = {
       r = this.right.count();
     }
     return l + r + 1;
+  },
+
+  breadthFirstLog: function() {
+    var result = [];
+    var nodes = [this];
+    var counter = 0;
+    while (counter < nodes.length) {
+      if (nodes[counter].left) {
+        nodes.push(nodes[counter].left);
+      }
+      if (nodes[counter].right) {
+        nodes.push(nodes[counter].right);
+      }
+      result.push(nodes[counter].value);
+      counter++;
+    }
+    return result;
   }
 
 };

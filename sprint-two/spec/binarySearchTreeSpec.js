@@ -45,4 +45,13 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(6);
     expect(binarySearchTree.count()).to.equal(5);
   });
+
+  it('should log the nodes in a breadth first manner', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(6);
+    var result = binarySearchTree.breadthFirstLog();
+    expect(result).to.eql([5, 2, 7, 3, 6]);
+  });
 });
