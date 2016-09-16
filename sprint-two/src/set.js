@@ -8,6 +8,7 @@ var Set = function() {
 var setPrototype = {};
 
 setPrototype.add = function(item) {
+  item = JSON.stringify(item);
   if (!this._storage[item]) {
     this._count++;
   }
@@ -16,10 +17,12 @@ setPrototype.add = function(item) {
 };
 
 setPrototype.contains = function(item) {
+  item = JSON.stringify(item);
   return !!this._storage[item];
 };
 
 setPrototype.remove = function(item) {
+  item = JSON.stringify(item);
   if (this._storage[item]) {
     this._count--;
   }

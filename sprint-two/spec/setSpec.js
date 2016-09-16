@@ -34,4 +34,33 @@ describe('set', function() {
     expect(set.count()).to.equal(2);
   });
 
+  it('should handle numbers as well as strings', function() {
+    set.add('Susan Sarandon');
+    set.add('Danny Glover');
+    set.add(4);
+    set.add(9);
+    expect(set.count()).to.equal(4);
+    expect(set.contains(4)).to.equal(true);
+    set.remove(4);
+    expect(set.contains(4)).to.equal(false);
+    expect(set.count()).to.equal(3);
+  });
+
+  it('should handle input objects of any type', function() {
+    set.add('1,2,3');
+    set.add('Danny Glover');
+    set.add(4);
+    set.add(9);
+    set.add([1, 2, 3]);
+    set.add({});
+    expect(set.count()).to.equal(6);
+    expect(set.contains([1, 2, 3])).to.equal(true);
+    expect(set.contains({})).to.equal(true);
+    set.remove([1, 2, 3]);
+    expect(set.contains([1, 2, 3])).to.equal(false);
+    set.remove({});
+    expect(set.contains({})).to.equal(false);
+    expect(set.count()).to.equal(4);
+  });
+
 });
