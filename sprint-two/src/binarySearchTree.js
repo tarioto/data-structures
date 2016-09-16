@@ -45,6 +45,18 @@ var binaryTreeMethods = {
     if (this.right) {
       this.right.depthFirstLog(cb);
     }
+  },
+
+  count: function() {
+    var l = 0;
+    var r = 0;
+    if (this.left) {
+      l = this.left.count();
+    }
+    if (this.right) {
+      r = this.right.count();
+    }
+    return l + r + 1;
   }
 
 };
