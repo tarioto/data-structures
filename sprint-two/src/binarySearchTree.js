@@ -12,7 +12,7 @@ var binaryTreeMethods = {
       if (this.left) {
         this.left.insert(value);
       } else {
-        this.left = new BinarySearchTree(value);
+        this.left = BinarySearchTree(value);
       }
     }
 
@@ -20,7 +20,7 @@ var binaryTreeMethods = {
       if (this.right) {
         this.right.insert(value);
       } else {
-        this.right = new BinarySearchTree(value);
+        this.right = BinarySearchTree(value);
       }
     }
   },
@@ -66,4 +66,8 @@ var binaryTreeMethods = {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+ insert: O(log n)
+ contains: O(log n)
+ depthFirstLog: O(n)
+ count: O(n)
  */

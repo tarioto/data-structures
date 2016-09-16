@@ -1,7 +1,6 @@
-
-
 var HashTable = function() {
   this._limit = 8;
+  this._pairs = 0;
   this._storage = LimitedArray(this._limit);
 };
 
@@ -20,13 +19,15 @@ HashTable.prototype.insert = function(k, v) {
       this._storage.set(index, alreadyThere);
     } else {
       alreadyThere.push([k, v]);
+      this._pairs++;
       this._storage.set(index, alreadyThere);
     }
   } else {
+    this._pairs++;
     this._storage.set(index, [[k, v]]);
   }
-  if (this.basketsUsed() / this._limit >= .75) {
-    this.double();
+  if (this._pairs / this._limit >= .75) {
+    this._double();
   }
 };
 
@@ -47,17 +48,22 @@ HashTable.prototype.retrieve = function(k) {
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
+  if (this._storage.get(index) !== undefined) {
+    this._pairs--;
+  }
   this._storage.set(index, undefined);
-  if (this.basketsUsed() / this._limit < .25) {
-    this.half();
+
+  if (this._pairs / this._limit < .25) {
+    this._half();
   }
 };
 
-HashTable.prototype.double = function() {
+HashTable.prototype._double = function() {
   var old = this._storage;
   this._limit *= 2;
   this._storage = LimitedArray(this._limit);
   var current = this;
+  this._pairs = 0;
   old.each(function(basket) {
     if (basket) {
       basket.forEach(function(pair) {
@@ -67,11 +73,12 @@ HashTable.prototype.double = function() {
   });
 };
 
-HashTable.prototype.half = function() {
+HashTable.prototype._half = function() {
   var old = this._storage;
   this._limit = Math.ceil(this._limit / 2);
   this._storage = LimitedArray(this._limit);
   var current = this;
+  this._pairs = 0;
   old.each(function(basket) {
     if (basket) {
       basket.forEach(function(pair) {
@@ -81,22 +88,14 @@ HashTable.prototype.half = function() {
   });
 };
 
-HashTable.prototype.basketsUsed = function() {
-  var result = 0;
-  this._storage.each(function(basket) {
-    if (basket) {
-      basket.forEach(function(pair) {
-        result++;
-      });
-    }
-  });
-  return result;
-};
-
-
 
 /*
  * Complexity: What is the time complexity of the above functions?
+ insert: O(1) *as long as the hash function is performing correctly / O(n) if they resize
+ retrieve: O(1) *as long as the hash function is performing correctly
+ remove: O(1) *as long as the hash function is performing correctly / O(n) if they resize
+ _double: O(n)
+ _half: O(n)
  */
 
 
