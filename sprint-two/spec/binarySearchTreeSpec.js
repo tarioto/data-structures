@@ -15,6 +15,8 @@ describe('binarySearchTree', function() {
   it('should insert values at the correct location in the tree', function() {
     binarySearchTree.insert(2);
     binarySearchTree.insert(3);
+    // debugger;
+    expect(binarySearchTree.value).to.equal(3);
     binarySearchTree.insert(7);
     binarySearchTree.insert(6);
     expect(binarySearchTree.left.right.value).to.equal(3);
@@ -65,6 +67,23 @@ describe('binarySearchTree', function() {
     expect(binarySearchTree.maxDepth).to.equal(3);
     binarySearchTree.insert(8);
     expect(binarySearchTree.maxDepth).to.equal(4);
+  });
+
+  it('should know the min depth', function() {
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(8);
+    expect(binarySearchTree.findMinDepth()).to.equal(2);
+  });
+
+  it('should know its parent', function() {
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(8);
+    expect(binarySearchTree.parent).to.equal(null);
+    expect(binarySearchTree.left.parent).to.equal(binarySearchTree);
+    expect(binarySearchTree.right.parent).to.equal(binarySearchTree);
+    expect(binarySearchTree.right.right.parent).to.equal(binarySearchTree.right);
   });
 
   it('should rebalance the tree if the max depth is more than twice the minimum depth', function() {
