@@ -3,26 +3,45 @@ var BinarySearchTree = function(value) {
   tree.value = value;
   tree.left = null;
   tree.right = null;
+  tree.weight = 1;
+  tree.maxDepth = 1;
   return tree;
 };
 
 var binaryTreeMethods = {
-  insert: function(value) {
+  insert: function(value, depth = 1) {
+    this.weight++;
+    var possibleMaxDepth;
     if (value < this.value) {
       if (this.left) {
-        this.left.insert(value);
+        possibleMaxDepth = this.left.insert(value, depth + 1);
+        if (this.maxDepth < possibleMaxDepth) {
+          this.maxDepth = possibleMaxDepth - (depth - 1);
+        }
       } else {
         this.left = BinarySearchTree(value);
+        if (this.maxDepth < 2) {
+          this.maxDepth = 2;
+          possibleMaxDepth = depth + 1;
+        }
       }
     }
 
     if (value > this.value) {
       if (this.right) {
-        this.right.insert(value);
+        possibleMaxDepth = this.right.insert(value, depth + 1);
+        if (this.maxDepth < possibleMaxDepth) {
+          this.maxDepth = possibleMaxDepth - (depth - 1);
+        }
       } else {
         this.right = BinarySearchTree(value);
+        if (this.maxDepth < 2) {
+          this.maxDepth = 2;
+          possibleMaxDepth = depth + 1;
+        }
       }
     }
+    return possibleMaxDepth;
   },
 
   contains: function(target) {
@@ -48,15 +67,16 @@ var binaryTreeMethods = {
   },
 
   count: function() {
-    var l = 0;
-    var r = 0;
-    if (this.left) {
-      l = this.left.count();
-    }
-    if (this.right) {
-      r = this.right.count();
-    }
-    return l + r + 1;
+    // var l = 0;
+    // var r = 0;
+    // if (this.left) {
+    //   l = this.left.count();
+    // }
+    // if (this.right) {
+    //   r = this.right.count();
+    // // }
+    // return l + r + 1;
+    return this.weight;
   },
 
   breadthFirstLog: function() {
@@ -74,6 +94,10 @@ var binaryTreeMethods = {
       counter++;
     }
     return result;
+  },
+
+  _rebalance: function() {
+
   }
 
 };
@@ -86,5 +110,5 @@ var binaryTreeMethods = {
  insert: O(log n)
  contains: O(log n)
  depthFirstLog: O(n)
- count: O(n)
+ count: O(1)
  */
